@@ -1,34 +1,35 @@
 # Backend server using flask 
-
 from flask import Flask, send_file
 from flask_socketio import SocketIO
-import os
-import utils
 import json
+import random
 from flask_cors import CORS, cross_origin
+
+import utils
 
 # Fix payload issue
 from engineio.payload import Payload
 Payload.max_decode_packets = 100
-print("Hello World, from the Server")
-
-
 
 # Start up Flask web env
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-
-# start a socket
+# Start a socket
 socketio = SocketIO(app,cors_allowed_origins="*")
+
+# Connect to the database
+utils.create_connection("./data/test.db")
 
 # Home page for website, has all information we want on it
 @app.route("/test.json")
 @cross_origin()
 def test():
+    # Random test words
+    test_words = ["Matt", "Colin", "Gianna"]
     test_string = json.dumps({
-        'test': "Test",
+        'test': random.choice(test_words),
         'test2': "World",
     })
     return test_string
