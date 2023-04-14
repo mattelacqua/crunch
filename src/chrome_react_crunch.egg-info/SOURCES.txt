@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.py
+src/chrome_react_crunch.egg-info/PKG-INFO
+src/chrome_react_crunch.egg-info/SOURCES.txt
+src/chrome_react_crunch.egg-info/dependency_links.txt
+src/chrome_react_crunch.egg-info/not-zip-safe
+src/chrome_react_crunch.egg-info/requires.txt
+src/chrome_react_crunch.egg-info/top_level.txt

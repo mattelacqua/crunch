@@ -1,0 +1,8 @@
+name: crunch
+channels:
+    - defaults
+dependencies:
+    - python=3.11
+    - conda-build
+    - pip3
+    - pip
