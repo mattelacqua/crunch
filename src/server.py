@@ -20,7 +20,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 socketio = SocketIO(app,cors_allowed_origins="*")
 
 # Connect to the database
-utils.create_connection("./data/test.db")
+c = utils.create_connection("./data/user.db")
 
 # Home page for website, has all information we want on it
 @app.route("/test.json")
