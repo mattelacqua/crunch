@@ -43,6 +43,28 @@ def test_connect(auth):
 def test_disconnect():
     print('Client disconnected')
 
+@socketio.on('user_lookup')
+def user_lookup(data):
+    """
+    Lookup the user's info in the database. If its there, return True (probably should return everything)
+    """
+    global c
+    id = data['id']
+    print(f"C: {c}")
+    user = c.execute(  f'''
+                SELECT 1 
+                FROM user
+                WHERE id = {id};
+                ''')
+    print(f"Looking up User: {data['id']}")
+    if user.fetchall():
+        print(f"Found {id}")
+        return True
+    else:
+        return False
+
+
+
 if __name__ == '__main__':
     socketio.run(app, port=5001)
 
