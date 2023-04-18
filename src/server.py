@@ -63,6 +63,37 @@ def user_lookup(data):
     else:
         return False
 
+@socketio.on('user_form')
+def user_form(data):
+    """
+    Use the info input to the form to add to the SQL query.
+    """
+    global c
+    id = data['id']
+    form_info = data['form_info']
+    print(f"Got Form for user: {id}")
+    print(form_info)
+    
+    user = c.execute(f'''
+                INSERT INTO  user
+                (id, name, birth, email, phone, linkedin, github, facebook, twitter, personal) 
+                VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''', 
+                (id, 
+                 form_info["name"], 
+                 form_info["birth"], 
+                 form_info["email"], 
+                 form_info["phone"], 
+                 form_info["linkedin"], 
+                 form_info["github"], 
+                 form_info["facebook"], 
+                 form_info["twitter"], 
+                 form_info["personal"]))
+    
+    print(f"SQL Form additions result: {user}")
+
+    # Return success of user form query
+    return False
 
 
 if __name__ == '__main__':
