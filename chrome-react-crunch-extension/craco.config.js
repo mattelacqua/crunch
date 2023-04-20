@@ -9,7 +9,7 @@ module.exports = {
           entry: {
             main: [env === 'development' &&
             require.resolve('react-dev-utils/webpackHotDevClient'),paths.appIndexJs].filter(Boolean),
-            content: './src/chromeServices/DOMEvaluator.ts',
+            content: ['./src/chromeServices/DOMEvaluator.ts', './src/chromeServices/DOMInjector.js'],
           },
           output: {
             ...webpackConfig.output,

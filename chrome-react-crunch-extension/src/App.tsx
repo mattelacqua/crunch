@@ -31,8 +31,6 @@ class App extends React.Component<AppProps, AppState> {
       
   }
 
-  
-
   render () {
     return (
     <div className="App">

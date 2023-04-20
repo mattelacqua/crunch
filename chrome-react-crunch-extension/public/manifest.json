@@ -14,7 +14,14 @@
       "128": "logo192.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "scripting",
+    "http://*/*",
+    "https://*/*",
+    "<all_urls>"
+  ],
+  "host_permissions": [
+    "*://*/"
   ],
   "content_scripts": [
     {
