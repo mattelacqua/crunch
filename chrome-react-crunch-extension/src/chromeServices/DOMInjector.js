@@ -1,14 +1,9 @@
-import App from '../App';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from '../App';
 
 const myDiv = document.createElement('div');
 myDiv.id = 'my-id';
-document.body.appendChild(myDiv);
+document.body.prepend(myDiv);
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  myDiv
-);
+ReactDOM.render(<App />, myDiv);
