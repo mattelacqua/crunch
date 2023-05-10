@@ -5,13 +5,29 @@ import UserForm from './UserForm'
 
 type UserIDLookupProps = {
   socket: Socket,
+  lookup_cb: (user_ret: UserID | undefined) => void // Lookup callback for the function
 }
 
 type UserIDLookupState = {
   id: string,
   idFound: Boolean,
   idSubmitted: Boolean,
+  user: UserID | undefined
 }
+
+type UserID = {
+  id: number,
+  name: string,
+  birth: string,
+  email: string,
+  phone: string,
+  linkedin: string | null | undefined,
+  github: string | null | undefined,
+  facebook: string | null | undefined,
+  twitter: string | null | undefined,
+  personal: string | null | undefined,
+}
+
 // Create the socket
 class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState> {
 
@@ -23,6 +39,7 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
       id: "",
       idFound: false,
       idSubmitted: false,
+      user: undefined
     };
 
     this.handleIDChange = this.handleIDChange.bind(this);
@@ -43,13 +60,22 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
       {
         id: this.state.id,
       },
-      (found: Boolean) => {
-        if (found == true){
-          this.setState({idFound: true});
+      (found: UserID | null | undefined) => {
+        console.log("found", found);
+        if (found !== null && found !== undefined){
+          this.setState({ idFound: true,
+                          idSubmitted: true,
+                          user: found});
           console.log("Id found, setting idFound=True");
+          console.log("Lookup CB found")
+          this.props.lookup_cb(found);
         } else {
           console.log("Id not found. ");
-          this.setState({idSubmitted: true});
+          this.setState({idFound: false,
+                         idSubmitted: true,
+                         user: undefined});
+          console.log("Lookup CB not found")
+          this.props.lookup_cb(undefined);
         }
       }); // End emit
   }
@@ -70,8 +96,8 @@ render () {
       {  // If ID is not found but has been submitted
         (this.state.idSubmitted && !this.state.idFound) &&
         <div>
-         <p> UserID not found. Please fill out the following form or provide a valid User ID. </p> 
-         <UserForm
+        <p> UserID not found. Please fill out the following form or provide a valid User ID. </p> 
+        <UserForm
             id={this.state.id}
             socket={this.props.socket}
             />
@@ -81,7 +107,9 @@ render () {
       {  // If ID is found: Get their info available!
         (this.state.idSubmitted && this.state.idFound) &&
         <div>
-         <p> UserID found. RENDER HERE THEIR INFO </p> 
+        <p> User Info:  </p> 
+        <p> {JSON.stringify(this.state.user)}</p>
+        <p> Banana </p>
         </div>
       }
     </div>
@@ -90,3 +118,4 @@ render () {
 }
 
 export default UserIDLookup;
+export type {UserID};

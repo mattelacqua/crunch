@@ -9,6 +9,9 @@ import utils
 
 # Fix payload issue
 from engineio.payload import Payload
+
+import os, sys
+
 Payload.max_decode_packets = 100
 
 # Start up Flask web env
@@ -52,16 +55,30 @@ def user_lookup(data):
     id = data['id']
     print(f"C: {c}")
     user = c.execute(  f'''
-                SELECT 1 
+                SELECT  *
                 FROM user
                 WHERE id = {id};
                 ''')
     print(f"Looking up User: {data['id']}")
-    if user.fetchall():
-        print(f"Found {id}")
-        return True
+    res = user.fetchall()
+    if res:
+        print(f"Found {res}")
+        res = res[0]
+        ret_struct ={"id": res[0] if res[0] else None,
+                    "name": res[1] if res[1] else None,
+                    "birth": res[2] if res[2] else None,
+                    "email": res[3] if res[3] else None,
+                    "phone": res[4] if res[4] else None,
+                    "linkedin": res[5] if res[5] else None,
+                    "github": res[6] if res[6] else None,
+                    "facebook": res[7] if res[7] else None,
+                    "twitter": res[8] if res[8] else None,
+                    "personal": res[9] if res[9] else None }
+        print(f"Returning: {ret_struct}")
+        return ret_struct
     else:
-        return False
+        print(f"Not found")
+        return None
 
 @socketio.on('user_form')
 def user_form(data):
@@ -74,7 +91,7 @@ def user_form(data):
     print(f"Got Form for user: {id}")
     print(form_info)
     
-    user = c.execute(f'''
+    insert_user = (f'''
                 INSERT INTO  user
                 (id, name, birth, email, phone, linkedin, github, facebook, twitter, personal) 
                 VALUES
@@ -89,8 +106,10 @@ def user_form(data):
                  form_info["facebook"], 
                  form_info["twitter"], 
                  form_info["personal"]))
-    
-    print(f"SQL Form additions result: {user}")
+    c.execute(*insert_user)
+    c.commit()
+    print(f"SQL Form addition committed")
+
 
     # Return success of user form query
     return False

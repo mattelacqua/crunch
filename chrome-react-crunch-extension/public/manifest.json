@@ -14,11 +14,8 @@
       "128": "logo192.png"
   },
   "permissions": [
-    "activeTab",
-    "scripting",
-    "http://*/*",
-    "https://*/*",
-    "<all_urls>"
+    "tabs",
+    "scripting"
   ],
   "host_permissions": [
     "*://*/"

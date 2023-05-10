@@ -18,6 +18,9 @@ const messagesFromReactAppListener = (
    };
  
    sendResponse(response);
+
+   chrome.runtime.reload();
+   chrome.runtime.restart();
 }
  
 /**
