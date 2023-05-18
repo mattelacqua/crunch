@@ -1,30 +1,19 @@
 import React from 'react';
 import './App.css';
 import { DOMMessage, DOMMessageResponse } from './types';
-
+import axios, {AxiosInstance} from 'axios';
 // Import Test
 import UserIDLookup, {UserID} from './userID/UserIDLookup'
 
-// Import Socket IO
-import io, {Socket} from 'socket.io-client';
+const backend : AxiosInstance = axios.create({
+  baseURL: 'http://localhost:8000/',
+});
 
 // Create the socket
-
-var socket: Socket;
-socket = io('http://localhost:5001',
-  {
-    auth: {
-      message: 'Hello from the plugin!', 
-    }
-  }
-);
-
 type AppProps = {
-
 }
 
 type AppState = {
-  socket: Socket,
   user: UserID | undefined,
 }
 
@@ -35,7 +24,6 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
-      socket: socket,
       user: undefined,
     };
 
@@ -54,9 +42,9 @@ class App extends React.Component<AppProps, AppState> {
   render () {
     return (
     <div className="App">
-      <h1>Crunch: Data Tool for Job Seekers</h1>
+      <h1>Welcome to Crunch: a Data Tool for Job Seekers</h1>
 
-      <UserIDLookup lookup_cb={this.lookup_cb} socket={this.state.socket} />
+      <UserIDLookup lookup_cb={this.lookup_cb} backend={backend} />
 
     </div>
   );

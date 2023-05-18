@@ -22,12 +22,9 @@ def get_version(filename):
 version = get_version(filename="src/__init__.py")
 
 install_requires = [
-    "flask",
-    "gevent",
-    "eventlet",
-    "flask_socketio",
-    "flask-cors",
-    "python-socketio[client]",
+        'django',
+        'djangorestframework',
+        'django-cors-headers',
 ]
 
 system_version = tuple(sys.version_info)[:3]

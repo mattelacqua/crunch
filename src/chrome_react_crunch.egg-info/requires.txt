@@ -1,6 +1,3 @@
-flask
-gevent
-eventlet
-flask_socketio
-flask-cors
-python-socketio[client]
+django
+djangorestframework
+django-cors-headers

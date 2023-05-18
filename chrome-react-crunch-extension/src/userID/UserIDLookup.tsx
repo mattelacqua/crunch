@@ -1,11 +1,12 @@
 import React, {SyntheticEvent} from 'react';
-import {Socket} from 'socket.io-client';
+import UserForm from './UserForm';
+import { AxiosInstance } from 'axios';
 
-import UserForm from './UserForm'
+
 
 type UserIDLookupProps = {
-  socket: Socket,
   lookup_cb: (user_ret: UserID | undefined) => void // Lookup callback for the function
+  backend: AxiosInstance
 }
 
 type UserIDLookupState = {
@@ -43,7 +44,7 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
     };
 
     this.handleIDChange = this.handleIDChange.bind(this);
-    this.handleIDSubmit = this.handleIDSubmit.bind(this);
+    this.getUserID = this.getUserID.bind(this);
   }
 
   // Handled the input to the text box changing
@@ -53,10 +54,29 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
   }
 
   // Handle the submission and lookup of the form.
-  handleIDSubmit(event: SyntheticEvent) {
+  getUserID(event: SyntheticEvent) {
     event.preventDefault();
     console.log("Client sending the ID", this.state.id);
-    this.props.socket.emit('user_lookup', 
+
+    const request = {
+      method: 'GET',
+      url: 'crunch/users/',
+      params: {id: this.state.id},
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+
+    this.props.backend
+        .request(request)
+        .then((data: any) => {
+          console.log(data);
+        })
+        .catch((error: any) => {
+          console.error(error);
+        });
+
+    /*this.props.socket.emit('user_lookup', 
       {
         id: this.state.id,
       },
@@ -77,14 +97,14 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
           console.log("Lookup CB not found")
           this.props.lookup_cb(undefined);
         }
-      }); // End emit
+      }); // End emit*/
   }
 
 render () {
   return (
     <div>
       <div>
-      <form onSubmit={this.handleIDSubmit}>
+      <form onSubmit={this.getUserID}>
         <label>
           UserID Lookup:
           <input type="text" name="id" onChange={this.handleIDChange}/>
@@ -99,7 +119,6 @@ render () {
         <p> UserID not found. Please fill out the following form or provide a valid User ID. </p> 
         <UserForm
             id={this.state.id}
-            socket={this.props.socket}
             />
         </div>
       }

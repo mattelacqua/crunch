@@ -5,7 +5,6 @@ import {Socket} from 'socket.io-client';
 
 type UserFormProps = {
   id: string,
-  socket: Socket,
 }
 
 type UserFormState = {
@@ -97,8 +96,8 @@ class UserForm extends React.Component<UserFormProps, UserFormState> {
   // Handle the submission and lookup of the form.
   handleFormSubmit(event: SyntheticEvent) {
     event.preventDefault();
-    console.log("Client sending their Form with info:", this.state);
-    this.props.socket.emit('user_form', 
+    console.log("FIX THE API CALL TO BE DJANGO", this.state);
+    /*this.props.socket.emit('user_form', 
         // Parameters
         {
           id: this.props.id,
@@ -113,7 +112,7 @@ class UserForm extends React.Component<UserFormProps, UserFormState> {
             console.log("Adding user to database has failed");
             this.setState({userAdded: false});
           }
-        }); // End emit
+        }); // End emit*/
   }
 
 render () {
