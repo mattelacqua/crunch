@@ -70,34 +70,18 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
     this.props.backend
         .request(request)
         .then((data: any) => {
-          console.log(data);
-        })
-        .catch((error: any) => {
-          console.error(error);
-        });
-
-    /*this.props.socket.emit('user_lookup', 
-      {
-        id: this.state.id,
-      },
-      (found: UserID | null | undefined) => {
-        console.log("found", found);
-        if (found !== null && found !== undefined){
+          console.log(data.msg);
           this.setState({ idFound: true,
                           idSubmitted: true,
-                          user: found});
-          console.log("Id found, setting idFound=True");
-          console.log("Lookup CB found")
-          this.props.lookup_cb(found);
-        } else {
-          console.log("Id not found. ");
-          this.setState({idFound: false,
-                         idSubmitted: true,
-                         user: undefined});
-          console.log("Lookup CB not found")
-          this.props.lookup_cb(undefined);
-        }
-      }); // End emit*/
+                          user: data.user});
+          this.props.lookup_cb(data.user);
+        })
+        .catch((error: any) => {
+          console.error('UserID Not Found:', error);
+          this.setState({ idFound: false,
+                          idSubmitted: true,
+                          user: undefined});
+        });
   }
 
 render () {
@@ -119,6 +103,7 @@ render () {
         <p> UserID not found. Please fill out the following form or provide a valid User ID. </p> 
         <UserForm
             id={this.state.id}
+            backend={this.props.backend}
             />
         </div>
       }

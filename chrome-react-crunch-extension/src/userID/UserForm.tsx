@@ -1,10 +1,10 @@
 import React, {SyntheticEvent} from 'react';
 
-// Import Socket IO
-import {Socket} from 'socket.io-client';
+import { AxiosInstance } from 'axios';
 
 type UserFormProps = {
   id: string,
+  backend: AxiosInstance
 }
 
 type UserFormState = {
@@ -96,7 +96,32 @@ class UserForm extends React.Component<UserFormProps, UserFormState> {
   // Handle the submission and lookup of the form.
   handleFormSubmit(event: SyntheticEvent) {
     event.preventDefault();
-    console.log("FIX THE API CALL TO BE DJANGO", this.state);
+    const request = {
+      method: 'POST',
+      url: 'crunch/users/',
+      params: {
+        name: this.state.name,
+        birth: this.state.birth,
+        email: this.state.email,
+        phone: this.state.phone,
+        linkedin: this.state.linkedin,
+        facebook: this.state.facebook,
+        twitter: this.state.twitter,
+        personal: this.state.personal,
+      },
+    }
+    this.props.backend
+        .request(request)
+        .then((data: any) => {
+          console.log('User added to database', data);
+          this.setState({userAdded: true});
+        })
+        .catch((error: any) => {
+          console.log("Adding user to database has failed");
+          console.log(error.msg);
+          this.setState({userAdded: false});
+        });
+
     /*this.props.socket.emit('user_form', 
         // Parameters
         {
