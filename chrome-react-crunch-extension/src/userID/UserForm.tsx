@@ -99,16 +99,20 @@ class UserForm extends React.Component<UserFormProps, UserFormState> {
     const request = {
       method: 'POST',
       url: 'crunch/users/',
-      params: {
+      data: {
         name: this.state.name,
         birth: this.state.birth,
         email: this.state.email,
         phone: this.state.phone,
         linkedin: this.state.linkedin,
+        github: this.state.github,
         facebook: this.state.facebook,
         twitter: this.state.twitter,
         personal: this.state.personal,
       },
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
     this.props.backend
         .request(request)

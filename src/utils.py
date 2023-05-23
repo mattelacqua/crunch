@@ -24,41 +24,15 @@ def start_webserver():
     webserver = subprocess.Popen(["python","crunch_server/manage.py", "runserver"])
     return webserver
 
-def start_node():
+# Compile JS
+def compile_js():
     """
-    Start the ReactJS front end
+    Compile the javascript for the extension
     """
-    cmd = ['pgrep -f .*.*start.js']
-    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE)
-    my_pid, err = process.communicate()
-
-    if len(my_pid.splitlines()) >0:
-       print("Old NJS SCRIPT Running Killing.")
-       try:
-           os.kill(int(my_pid.decode("utf-8")), signal.SIGTERM)
-       except:
-           print("Unable to kill old start skript, so Starting up new")
-    else:
-      print("Old NJS SCRIPT not Running, Starting up new")
-
-    cmd = ['pgrep -f .*npm.*start']
-    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE)
-    my_pid, err = process.communicate()
-
-    if len(my_pid.splitlines()) >0:
-       print("Old NJS Running Killing.")
-       try:
-           os.kill(int(my_pid.decode("utf-8")), signal.SIGTERM)
-       except:
-           print("Unable to kill old NJS, so Starting up new")
-
-    else:
-      print("Old NJS not Running, Starting up new")
-
     node = subprocess.Popen(["npm","run", "build", "--prefix", "chrome-react-crunch-extension"])
     return node
+
+
 
 def create_connection(db_file):
     """ 

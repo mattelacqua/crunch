@@ -5,6 +5,8 @@ print("Starting Run Script")
 
 print("Starting Webserver")
 utils.start_webserver()
-print("Starting Node")
-utils.start_node()
+
+print("Compiling JS")
+utils.compile_js()
+
 print("Ending Run Script")
