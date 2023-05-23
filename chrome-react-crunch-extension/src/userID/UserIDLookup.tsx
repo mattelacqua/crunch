@@ -70,10 +70,10 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
     this.props.backend
         .request(request)
         .then((data: any) => {
-          console.log(data.msg);
+          console.log(data);
           this.setState({ idFound: true,
                           idSubmitted: true,
-                          user: data.user});
+                          user: data});
           this.props.lookup_cb(data.user);
         })
         .catch((error: any) => {

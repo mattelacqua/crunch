@@ -119,29 +119,13 @@ class UserForm extends React.Component<UserFormProps, UserFormState> {
         .then((data: any) => {
           console.log('User added to database', data);
           this.setState({userAdded: true});
+          // TODO: MAKE IT RENDER A MESSAGE SAYING THAT THE NEW USER IS ADDED TO THE DATABASE OR DO A CALL BACK TO LET MAIN APP KNOW WE HAVE LOGGED IN
         })
         .catch((error: any) => {
           console.log("Adding user to database has failed");
           console.log(error.msg);
           this.setState({userAdded: false});
         });
-
-    /*this.props.socket.emit('user_form', 
-        // Parameters
-        {
-          id: this.props.id,
-          form_info: this.state,
-        },
-        // Callback
-        (added: Boolean) => {
-          if (added == true){
-            this.setState({userAdded: true});
-            console.log("User has been added to database");
-          } else {
-            console.log("Adding user to database has failed");
-            this.setState({userAdded: false});
-          }
-        }); // End emit*/
   }
 
 render () {
