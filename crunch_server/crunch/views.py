@@ -13,7 +13,6 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 # Find the user in the database
-
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def users(request):
@@ -69,9 +68,6 @@ def users(request):
         personal = data['personal']
 
         # Check if the user is already in there
-        
-        
-
         new_user = User(name=name, birth_date=birth_date, email=email, phone=phone, linkedin=linkedin, github=github, facebook=facebook, twitter=twitter, personal=personal)
 
         new_user.save()
@@ -83,3 +79,10 @@ def users(request):
         response['id'] = new_user.id
 
         return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+@csrf_exempt
+@api_view(['GET'])
+def applications(request):
+    data = request.data
+    print(data)

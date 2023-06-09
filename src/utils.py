@@ -1,5 +1,6 @@
 # Utilities for project crunch
 import subprocess, os, signal, sqlite3
+import sys, csv
 
 def start_webserver():
     """ 
@@ -46,3 +47,16 @@ def create_connection(db_file):
         return conn
     except sqlite3.Error as e:
         print(f"Error connecting to {db_file} : {e}")
+
+def read_in_application_csv(file_path):
+    try:
+        data_list = []
+        with open(file_path, encoding='utf-8-sig') as file:
+            data = csv.DictReader(file)
+            for row in data:
+                data_list.append(row)
+            return data_list
+
+    except Exception as error:
+        print(f"Handling error: {error}")
+
