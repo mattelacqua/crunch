@@ -1,6 +1,7 @@
 import React, {SyntheticEvent} from 'react';
 import UserForm from './UserForm';
 import { AxiosInstance } from 'axios';
+import { UserID } from './UserTypes';
 
 
 
@@ -16,20 +17,6 @@ type UserIDLookupState = {
   user: UserID | undefined
 }
 
-type UserID = {
-  id: number,
-  name: string,
-  birth: string,
-  email: string,
-  phone: string,
-  linkedin: string | null | undefined,
-  github: string | null | undefined,
-  facebook: string | null | undefined,
-  twitter: string | null | undefined,
-  personal: string | null | undefined,
-}
-
-// Create the socket
 class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState> {
 
   // Constructor for component (set up what our App's state is)
@@ -74,7 +61,7 @@ class UserIDLookup extends React.Component<UserIDLookupProps, UserIDLookupState>
           this.setState({ idFound: true,
                           idSubmitted: true,
                           user: data.data});
-          this.props.lookup_cb(data.user);
+          this.props.lookup_cb(data.data);
         })
         .catch((error: any) => {
           console.error('UserID Not Found:', error);
@@ -122,4 +109,3 @@ render () {
 }
 
 export default UserIDLookup;
-export type {UserID};

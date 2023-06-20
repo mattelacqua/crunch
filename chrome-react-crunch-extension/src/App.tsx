@@ -3,7 +3,11 @@ import './App.css';
 import { DOMMessage, DOMMessageResponse } from './types';
 import axios, {AxiosInstance} from 'axios';
 // Import Test
-import UserIDLookup, {UserID} from './userID/UserIDLookup'
+import UserIDLookup from './userID/UserIDLookup'
+import { UserID } from './userID/UserTypes'
+
+// Menu Selection Import
+import MenuSelection from './UserMenu/MenuSelection'
 
 const backend : AxiosInstance = axios.create({
   baseURL: 'http://localhost:8000/',
@@ -14,7 +18,8 @@ type AppProps = {
 }
 
 type AppState = {
-  user: UserID | undefined,
+  user: UserID,
+  ext_state: string,
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -24,19 +29,47 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
-      user: undefined,
+      user: {
+        id: -1,
+        name: "",
+        birth: "",
+        email: "",
+        phone: "",
+        linkedin: null,
+        github: null,
+        facebook: null,
+        twitter: null,
+        personal: null,
+      },
+      ext_state: "login",
     };
 
     this.lookup_cb = this.lookup_cb.bind(this);
+    this.menu_selection_cb = this.menu_selection_cb.bind(this);
 
   }
 
   lookup_cb(user_ret: UserID | undefined) {
     if (user_ret != undefined){
-      this.setState({user: user_ret});
+      this.setState(
+        {
+          user: user_ret,
+          ext_state: "menu-selection"
+        });
+      console.log("Set state of user to:", user_ret);
+      console.log("Set state of extension to:", "menu-selection");
     }
-    console.log("Set state of user to:", user_ret);
+    else {
+      console.log("Setting user callback failed.");
+    }
+  };
 
+  menu_selection_cb(next_state: string) {
+    this.setState(
+      {
+        ext_state: next_state
+      });
+    console.log("Menu Button set extension state to ", next_state);
   };
 
   render () {
@@ -44,7 +77,15 @@ class App extends React.Component<AppProps, AppState> {
     <div className="App">
       <h1>Welcome to Crunch: a Data Tool for Job Seekers</h1>
 
-      <UserIDLookup lookup_cb={this.lookup_cb} backend={backend} />
+      { /* Initial user login */
+        (this.state.ext_state == "login") &&
+        <UserIDLookup lookup_cb={this.lookup_cb} backend={backend} />
+      }
+      { /* Menu Selection Buttons*/
+        (this.state.ext_state == "menu-selection") &&
+        <MenuSelection menu_selection_cb={this.menu_selection_cb} user={this.state.user} backend={backend} />
+      }
+
 
     </div>
   );

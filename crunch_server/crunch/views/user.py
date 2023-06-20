@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
 
-from .models import User
+from crunch.models import User
 
 import json
 # Create your views here.
@@ -81,8 +81,3 @@ def users(request):
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-@csrf_exempt
-@api_view(['GET'])
-def applications(request):
-    data = request.data
-    print(data)
