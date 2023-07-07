@@ -9,6 +9,9 @@ import { UserID } from './userID/UserTypes'
 // Menu Selection Import
 import MenuSelection from './UserMenu/MenuSelection'
 
+// Application Menu
+import ApplicationMenu from './Applications/ApplicationMenu'
+
 const backend : AxiosInstance = axios.create({
   baseURL: 'http://localhost:8000/',
 });
@@ -84,6 +87,10 @@ class App extends React.Component<AppProps, AppState> {
       { /* Menu Selection Buttons*/
         (this.state.ext_state == "menu-selection") &&
         <MenuSelection menu_selection_cb={this.menu_selection_cb} user={this.state.user} backend={backend} />
+      }
+      { /* Application Visualization */
+        (this.state.ext_state == "app-visualization") &&
+        <ApplicationMenu menu_state_cb={this.menu_selection_cb} user={this.state.user} backend={backend} />
       }
 
 
